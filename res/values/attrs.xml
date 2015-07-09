@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AdSlidShowView">
+        <attr name="width" format="dimension"></attr>
+        <attr name="height" format="dimension"></attr>
+    </declare-styleable>
+</resources>
