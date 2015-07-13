@@ -3,5 +3,6 @@
     <declare-styleable name="AdSlidShowView">
         <attr name="width" format="dimension"></attr>
         <attr name="height" format="dimension"></attr>
+        <attr name="imgsum" format="string"></attr>
     </declare-styleable>
 </resources>

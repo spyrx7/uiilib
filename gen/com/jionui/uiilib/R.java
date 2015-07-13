@@ -19,6 +19,14 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int height=0x7f010001;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int imgsum=0x7f010002;
         /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
 Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
 in (inches), mm (millimeters).
@@ -107,13 +115,15 @@ containing a value of this type.
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #AdSlidShowView_height com.jionui.uiilib:height}</code></td><td></td></tr>
+           <tr><td><code>{@link #AdSlidShowView_imgsum com.jionui.uiilib:imgsum}</code></td><td></td></tr>
            <tr><td><code>{@link #AdSlidShowView_width com.jionui.uiilib:width}</code></td><td></td></tr>
            </table>
            @see #AdSlidShowView_height
+           @see #AdSlidShowView_imgsum
            @see #AdSlidShowView_width
          */
         public static final int[] AdSlidShowView = {
-            0x7f010000, 0x7f010001
+            0x7f010000, 0x7f010001, 0x7f010002
         };
         /**
           <p>This symbol is the offset where the {@link com.jionui.uiilib.R.attr#height}
@@ -131,6 +141,20 @@ containing a value of this type.
           @attr name com.jionui.uiilib:height
         */
         public static final int AdSlidShowView_height = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.jionui.uiilib.R.attr#imgsum}
+          attribute's value can be found in the {@link #AdSlidShowView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.jionui.uiilib:imgsum
+        */
+        public static final int AdSlidShowView_imgsum = 2;
         /**
           <p>This symbol is the offset where the {@link com.jionui.uiilib.R.attr#width}
           attribute's value can be found in the {@link #AdSlidShowView} array.

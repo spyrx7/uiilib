@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		int[] resimg=new int[]{R.drawable.img01,R.drawable.img02,R.drawable.img03,R.drawable.img04,R.drawable.img05};
+		int[] resimg=new int[]{R.drawable.img01,R.drawable.img02,R.drawable.img03};
 		
 		List<ImageView> adimgs=new ArrayList<ImageView>();
 		for(int i=0;i<resimg.length;i++){
@@ -34,10 +34,8 @@ public class MainActivity extends Activity {
 				Toast.makeText(getApplicationContext(), ""+i, 0).show();
 			}
 		}
-		
-
-		
 		);
+		
 		
 	}
 
