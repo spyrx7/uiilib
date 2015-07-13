@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     tools:context="com.jionui.uiilib.MainActivity" >
 
-    <com.jionui.uiilib.AdSlidShowView
+    <com.jionui.uiilib.view.AdSlidShowView
         android:id="@+id/adSlidShowView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         >
-    </com.jionui.uiilib.AdSlidShowView>
+    </com.jionui.uiilib.view.AdSlidShowView>
 
 </RelativeLayout>

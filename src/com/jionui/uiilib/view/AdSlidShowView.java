@@ -1,11 +1,16 @@
-package com.jionui.uiilib;
-
+package com.jionui.uiilib.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import com.jionui.uiilib.R;
+import com.jionui.uiilib.R.drawable;
+import com.jionui.uiilib.R.id;
+import com.jionui.uiilib.R.layout;
+import com.jionui.uiilib.R.styleable;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -189,7 +194,6 @@ public class AdSlidShowView extends FrameLayout {
 				}
 			}
 		}
-
 	}
 
 	Handler handler = new Handler() {

@@ -1,9 +1,9 @@
 package com.jionui.uiilib;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jionui.uiilib.AdSlidShowView.urlBackcall;
+import com.jionui.uiilib.view.AdSlidShowView;
+import com.jionui.uiilib.view.AdSlidShowView.urlBackcall;
 
 import android.app.Activity;
 import android.os.Bundle;
