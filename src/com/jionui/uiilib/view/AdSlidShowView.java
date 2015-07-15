@@ -1,19 +1,20 @@
 package com.jionui.uiilib.view;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+
+
 import com.jionui.uiilib.R;
-import com.jionui.uiilib.R.drawable;
-import com.jionui.uiilib.R.id;
-import com.jionui.uiilib.R.layout;
-import com.jionui.uiilib.R.styleable;
+import com.jionui.uiilib.utils.ImageDownLoader;
 
 import android.content.Context;
-import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -25,24 +26,18 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 public class AdSlidShowView extends FrameLayout {
 	private String tag = "AdSlidShowView";
 	private android.support.v4.view.ViewPager viewPageAd;
 	private LinearLayout dotList;
-	private View view;
 	private Context context;
 
 	private List<ImageView> adlistImage;
-	private String[] imgUrl;
-
 	private int currentItem = 0;
 	public urlBackcall adBackCall;
-	private boolean isAutoPlay = true;
 	private ScheduledExecutorService scheduledExecutorService;
-	
+
 	public interface urlBackcall {
 		void onUrlBackCall(int i);
 	}
@@ -65,33 +60,31 @@ public class AdSlidShowView extends FrameLayout {
 		startPlay();
 	}
 
+	/**
+	 * ʹ�� List<ImageView> �����ֲ�
+	 * 
+	 * @param adlistImage
+	 */
 	public void setAdImageList(List<ImageView> adlistImage) {
 		dotList.removeAllViews();
 		this.adlistImage = adlistImage;
-		for (int i = 0; i < adlistImage.size(); i++) {
-			View v = new View(context);
-			if (i == 0)
-				v.setBackgroundResource(R.drawable.dian);
-			else
-				v.setBackgroundResource(R.drawable.dian_down);
-			v.setLayoutParams(new LayoutParams(10, 10));
-			dotList.addView(v);
-		}
-
-		Log.i(tag, "setAdImageList");
-		initViewPager();
+		setDotLists(this.adlistImage);
 	}
 
-	public void setAdimgUrl(String[] urls) {
-		this.imgUrl = urls;
-	}
-
+	/**
+	 * ������ͼ Ĭ���� 5�� �ֲ�
+	 * 
+	 * 1 ����setAdImageList ���� List<ImageView> imgs �ı��ֲ�
+	 * 
+	 * 2 ����getAdListImage ���� List<String> Urls �ı��ֲ�
+	 * 
+	 * @param context
+	 * @param attrs
+	 */
 	private void initView(Context context, AttributeSet attrs) {
-
-		TypedArray a = context.obtainStyledAttributes(attrs,
-				R.styleable.AdSlidShowView);
 		LayoutInflater.from(context).inflate(R.layout.ad_viewpage_view, this);
 
+		// Ĭ�ϴ��� 5�� �ֲ�
 		int[] resimg = new int[] { R.drawable.img01, R.drawable.img01,
 				R.drawable.img01, R.drawable.img01, R.drawable.img01 };
 		adlistImage = new ArrayList<ImageView>();
@@ -101,8 +94,7 @@ public class AdSlidShowView extends FrameLayout {
 			imgView.setBackgroundResource(resimg[i]);
 			adlistImage.add(imgView);
 		}
-	
-		
+
 	}
 
 	private void initViewPager() {
@@ -116,7 +108,7 @@ public class AdSlidShowView extends FrameLayout {
 	private class adviewPagerAdpter extends PagerAdapter {
 		@Override
 		public int getCount() {
-			Log.i(tag, "adviewPagerAdpter" + adlistImage.size());
+			// Log.i(tag, "adviewPagerAdpter" + adlistImage.size());
 			return adlistImage.size();
 		}
 
@@ -150,24 +142,25 @@ public class AdSlidShowView extends FrameLayout {
 
 	private class adviewpagerListener implements OnPageChangeListener {
 		boolean isAutoPlay = false;
+
 		@Override
 		public void onPageScrollStateChanged(int arg0) {
 			switch (arg0) {
 			case 1:
-				 isAutoPlay = false;
+				isAutoPlay = false;
 				break;
 			case 2:
-				 isAutoPlay = true;
+				isAutoPlay = true;
 				break;
 			case 0:
-				if(viewPageAd.getCurrentItem()==viewPageAd.getAdapter().getCount()-1
-				     && !isAutoPlay){
+				if (viewPageAd.getCurrentItem() == viewPageAd.getAdapter()
+						.getCount() - 1 && !isAutoPlay) {
 					viewPageAd.setCurrentItem(0);
-				}else if(viewPageAd.getCurrentItem()==0
-					     && !isAutoPlay){
-					viewPageAd.setCurrentItem(viewPageAd.getAdapter().getCount()-1);
+				} else if (viewPageAd.getCurrentItem() == 0 && !isAutoPlay) {
+					viewPageAd.setCurrentItem(viewPageAd.getAdapter()
+							.getCount() - 1);
 				}
-				
+
 				break;
 
 			}
@@ -181,7 +174,7 @@ public class AdSlidShowView extends FrameLayout {
 
 		@Override
 		public void onPageSelected(int arg0) {
-			Log.i(tag, "" + arg0);
+			// Log.i(tag, "" + arg0);
 
 			currentItem = arg0;
 			for (int i = 0; i < dotList.getChildCount(); i++) {
@@ -211,10 +204,82 @@ public class AdSlidShowView extends FrameLayout {
 		}
 
 	}
-	
-	private void startPlay(){
-		scheduledExecutorService=Executors.newSingleThreadScheduledExecutor();
-		scheduledExecutorService.scheduleAtFixedRate(new SlidShowTask(), 1, 4, TimeUnit.SECONDS);
+
+	private void startPlay() {
+		scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+		scheduledExecutorService.scheduleAtFixedRate(new SlidShowTask(), 1, 4,
+				TimeUnit.SECONDS);
+	}
+
+	public void setImagesFromUrl(List<String> urls) {
+		Log.d("BS", "setImageFromUrl:" + urls.toString());
+		dotList.removeAllViews();
+		this.adlistImage = getAdListImage(urls);
+		setDotLists(this.adlistImage);
+		ImageDownLoader loader = new ImageDownLoader(this.getContext());
+		for (int i = 0; i < urls.size(); i++) {
+			String url = urls.get(i);
+			final int index = i;
+			Bitmap bitmap = loader.getBitmapCache(url);
+			if (bitmap != null) {
+				setImage(bitmap, i);
+			} else {
+				if (loader.getTaskCollection().containsKey(url)) {
+					return;
+				}
+
+				loader.loadImage(url, this.getWidth(), this.getHeight(),
+						new ImageDownLoader.AsyncImageLoaderListener() {
+
+							@Override
+							public void onImageLoader(Bitmap bitmap) {
+								if (this != null && bitmap != null) {
+									setImage(bitmap, index);
+									// Log.e("�e�`��", index+"");
+								}
+							}
+
+						});
+			}
+		}
+	}
+
+	/**
+	 * ʹ�� List<String> urls �����ֲ�
+	 * 
+	 * @param urls
+	 *            ���Ӽ���
+	 * @return
+	 */
+	private List<ImageView> getAdListImage(List<String> urls) {
+		List<ImageView> imgs = new ArrayList<ImageView>();
+		for (int i = 0; i < urls.size(); i++) {
+			ImageView view = new ImageView(context);
+			view.setBackgroundResource(R.drawable.img01);
+			imgs.add(view);
+		}
+		return imgs;
+	}
+
+	public void setDotLists(List<ImageView> adlistImage) {
+		for (int i = 0; i < adlistImage.size(); i++) {
+			View v = new View(context);
+			if (i == 0)
+				v.setBackgroundResource(R.drawable.dian);
+			else
+				v.setBackgroundResource(R.drawable.dian_down);
+			v.setLayoutParams(new LayoutParams(10, 10));
+			dotList.addView(v);
+		}
+		initViewPager();
+	}
+
+	public void setImage(Bitmap bitmap, int i) {
+		ImageView view = adlistImage.get(i);
+		Drawable drawable = new BitmapDrawable(bitmap);
+		view.setBackgroundDrawable(drawable);
+		requestLayout();
+		invalidate();
 	}
 
 }
