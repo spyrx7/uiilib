@@ -72,11 +72,11 @@ public class AdSlidShowView extends FrameLayout {
 	}
 
 	/**
-	 * ������ͼ Ĭ���� 5�� �ֲ�
+	 * 默认 5个 轮播
 	 * 
-	 * 1 ����setAdImageList ���� List<ImageView> imgs �ı��ֲ�
+	 * 1 使用setAdImageList 设置 List<ImageView> imgs 
 	 * 
-	 * 2 ����getAdListImage ���� List<String> Urls �ı��ֲ�
+	 * 2 使用getAdListImage 设置 List<String> Urls
 	 * 
 	 * @param context
 	 * @param attrs
@@ -84,7 +84,7 @@ public class AdSlidShowView extends FrameLayout {
 	private void initView(Context context, AttributeSet attrs) {
 		LayoutInflater.from(context).inflate(R.layout.ad_viewpage_view, this);
 
-		// Ĭ�ϴ��� 5�� �ֲ�
+		
 		int[] resimg = new int[] { R.drawable.img01, R.drawable.img01,
 				R.drawable.img01, R.drawable.img01, R.drawable.img01 };
 		adlistImage = new ArrayList<ImageView>();
@@ -137,6 +137,8 @@ public class AdSlidShowView extends FrameLayout {
 
 			return adlistImage.get(position);
 		}
+		
+		
 
 	}
 
@@ -145,9 +147,11 @@ public class AdSlidShowView extends FrameLayout {
 
 		@Override
 		public void onPageScrollStateChanged(int arg0) {
+			Log.e(tag, arg0+"");
 			switch (arg0) {
 			case 1:
 				isAutoPlay = false;
+				stopPlay();
 				break;
 			case 2:
 				isAutoPlay = true;
@@ -155,6 +159,7 @@ public class AdSlidShowView extends FrameLayout {
 			case 0:
 				if (viewPageAd.getCurrentItem() == viewPageAd.getAdapter()
 						.getCount() - 1 && !isAutoPlay) {
+					
 					viewPageAd.setCurrentItem(0);
 				} else if (viewPageAd.getCurrentItem() == 0 && !isAutoPlay) {
 					viewPageAd.setCurrentItem(viewPageAd.getAdapter()
@@ -209,6 +214,10 @@ public class AdSlidShowView extends FrameLayout {
 		scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 		scheduledExecutorService.scheduleAtFixedRate(new SlidShowTask(), 1, 4,
 				TimeUnit.SECONDS);
+	}
+	
+	private void stopPlay(){
+		scheduledExecutorService.shutdown();
 	}
 
 	public void setImagesFromUrl(List<String> urls) {

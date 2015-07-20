@@ -61,20 +61,22 @@ containing a value of this type.
         public static final int img05=0x7f020008;
     }
     public static final class id {
-        public static final int action_settings=0x7f080008;
-        public static final int adSlidShowView1=0x7f080000;
-        public static final int ad_viewPager=0x7f080001;
-        public static final int arrow=0x7f080004;
-        public static final int description=0x7f080006;
+        public static final int action_settings=0x7f080009;
+        public static final int adSlidImageView1=0x7f080000;
+        public static final int ad_viewPager=0x7f080003;
+        public static final int arrow=0x7f080005;
+        public static final int description=0x7f080007;
         public static final int ll_dotparent=0x7f080002;
-        public static final int progress_bar=0x7f080005;
-        public static final int pull_to_refresh_head=0x7f080003;
-        public static final int updated_at=0x7f080007;
+        public static final int ll_imgageView=0x7f080001;
+        public static final int progress_bar=0x7f080006;
+        public static final int pull_to_refresh_head=0x7f080004;
+        public static final int updated_at=0x7f080008;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int ad_viewpage_view=0x7f030001;
-        public static final int pull_to_refresh_head=0x7f030002;
+        public static final int ad_image_slid=0x7f030001;
+        public static final int ad_viewpage_view=0x7f030002;
+        public static final int pull_to_refresh_head=0x7f030003;
     }
     public static final class menu {
         public static final int main=0x7f070000;
