@@ -1,15 +1,17 @@
 package com.jionui.uiilib.view;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-
-
 import com.jionui.uiilib.R;
 import com.jionui.uiilib.utils.ImageDownLoader;
+import com.jionui.uiilib.utils.RandomTools;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -23,6 +25,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,7 +39,7 @@ public class AdSlidShowView extends FrameLayout {
 	private List<ImageView> adlistImage;
 	private int currentItem = 0;
 	public urlBackcall adBackCall;
-	private ScheduledExecutorService scheduledExecutorService;
+	protected int lastPosition;
 
 	public interface urlBackcall {
 		void onUrlBackCall(int i);
@@ -57,7 +60,7 @@ public class AdSlidShowView extends FrameLayout {
 		this.context = context;
 		initView(context, attrs);
 		initViewPager();
-		startPlay();
+		
 	}
 
 	/**
@@ -71,10 +74,12 @@ public class AdSlidShowView extends FrameLayout {
 		setDotLists(this.adlistImage);
 	}
 
+
+
 	/**
 	 * 默认 5个 轮播
 	 * 
-	 * 1 使用setAdImageList 设置 List<ImageView> imgs 
+	 * 1 使用setAdImageList 设置 List<ImageView> imgs
 	 * 
 	 * 2 使用getAdListImage 设置 List<String> Urls
 	 * 
@@ -84,7 +89,6 @@ public class AdSlidShowView extends FrameLayout {
 	private void initView(Context context, AttributeSet attrs) {
 		LayoutInflater.from(context).inflate(R.layout.ad_viewpage_view, this);
 
-		
 		int[] resimg = new int[] { R.drawable.img01, R.drawable.img01,
 				R.drawable.img01, R.drawable.img01, R.drawable.img01 };
 		adlistImage = new ArrayList<ImageView>();
@@ -101,6 +105,7 @@ public class AdSlidShowView extends FrameLayout {
 		viewPageAd = (ViewPager) findViewById(R.id.ad_viewPager);
 		viewPageAd.setFocusable(true);
 		viewPageAd.setAdapter(new adviewPagerAdpter());
+		viewPageAd.setCurrentItem(Integer.MAX_VALUE/2 - (Integer.MAX_VALUE/2%adlistImage.size())) ;
 		viewPageAd.setOnPageChangeListener(new adviewpagerListener());
 		dotList = (LinearLayout) findViewById(R.id.ll_dotparent);
 	}
@@ -109,7 +114,7 @@ public class AdSlidShowView extends FrameLayout {
 		@Override
 		public int getCount() {
 			// Log.i(tag, "adviewPagerAdpter" + adlistImage.size());
-			return adlistImage.size();
+			return Integer.MAX_VALUE;
 		}
 
 		@Override
@@ -119,26 +124,25 @@ public class AdSlidShowView extends FrameLayout {
 
 		@Override
 		public void destroyItem(View container, int position, Object object) {
-			((ViewPager) container).removeView(adlistImage.get(position));
-
+			//((ViewPager) container).removeView(adlistImage.get(position));
+			((ViewPager) container).removeView((View) object);
+			object = null;
 		}
 
 		@Override
 		public Object instantiateItem(View container, final int position) {
-			((ViewPager) container).addView(adlistImage.get(position));
-
-			ImageView img = adlistImage.get(position);
+			((ViewGroup) container).addView(adlistImage.get(position%adlistImage.size()));
+			
+			ImageView img = adlistImage.get(position%adlistImage.size());
 			img.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
-					adBackCall.onUrlBackCall(position);
+					adBackCall.onUrlBackCall(position%adlistImage.size());
 				}
 			});
 
-			return adlistImage.get(position);
+			return adlistImage.get(position%adlistImage.size());
 		}
-		
-		
 
 	}
 
@@ -147,11 +151,11 @@ public class AdSlidShowView extends FrameLayout {
 
 		@Override
 		public void onPageScrollStateChanged(int arg0) {
-			Log.e(tag, arg0+"");
+			
 			switch (arg0) {
 			case 1:
 				isAutoPlay = false;
-				stopPlay();
+				
 				break;
 			case 2:
 				isAutoPlay = true;
@@ -159,7 +163,7 @@ public class AdSlidShowView extends FrameLayout {
 			case 0:
 				if (viewPageAd.getCurrentItem() == viewPageAd.getAdapter()
 						.getCount() - 1 && !isAutoPlay) {
-					
+
 					viewPageAd.setCurrentItem(0);
 				} else if (viewPageAd.getCurrentItem() == 0 && !isAutoPlay) {
 					viewPageAd.setCurrentItem(viewPageAd.getAdapter()
@@ -178,12 +182,12 @@ public class AdSlidShowView extends FrameLayout {
 		}
 
 		@Override
-		public void onPageSelected(int arg0) {
+		public void onPageSelected(int position) {
 			// Log.i(tag, "" + arg0);
-
-			currentItem = arg0;
+			
+			position = position%adlistImage.size();
 			for (int i = 0; i < dotList.getChildCount(); i++) {
-				if (i == arg0) {
+				if (i == position) {
 					((View) dotList.getChildAt(i))
 							.setBackgroundResource(R.drawable.dian);
 				} else {
@@ -191,41 +195,27 @@ public class AdSlidShowView extends FrameLayout {
 							.setBackgroundResource(R.drawable.dian_down);
 				}
 			}
+			
+
 		}
 	}
 
 	Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			viewPageAd.setCurrentItem(currentItem);
+			
 		};
 	};
-
-	private class SlidShowTask implements Runnable {
-		public void run() {
-			synchronized (viewPageAd) {
-				currentItem = (currentItem + 1) % adlistImage.size();
-				handler.obtainMessage().sendToTarget();
-			}
-		}
-
-	}
-
-	private void startPlay() {
-		scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-		scheduledExecutorService.scheduleAtFixedRate(new SlidShowTask(), 1, 4,
-				TimeUnit.SECONDS);
-	}
 	
-	private void stopPlay(){
-		scheduledExecutorService.shutdown();
-	}
 
 	public void setImagesFromUrl(List<String> urls) {
-		Log.d("BS", "setImageFromUrl:" + urls.toString());
-		dotList.removeAllViews();
+		//Log.d("BS", "setImageFromUrl:" + urls.toString());
+		dotList.removeAllViews();	
 		this.adlistImage = getAdListImage(urls);
 		setDotLists(this.adlistImage);
 		ImageDownLoader loader = new ImageDownLoader(this.getContext());
+		urls=RandomTools.setRandomList(urls);
+		Log.d(tag, urls.toString());
+		Log.d(tag, urls.size()+"");
 		for (int i = 0; i < urls.size(); i++) {
 			String url = urls.get(i);
 			final int index = i;

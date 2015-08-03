@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     tools:context="com.jionui.uiilib.MainActivity" >
 
-    <!-- <com.jionui.uiilib.view.AdSlidShowView
+     <com.jionui.uiilib.view.AdSlidShowView
         android:id="@+id/adSlidShowView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         >
-    </com.jionui.uiilib.view.AdSlidShowView>  -->
+    </com.jionui.uiilib.view.AdSlidShowView> 
 
-    <com.jionui.uiilib.view.AdSlidImageView
+    <!--<com.jionui.uiilib.view.AdSlidImageView
         android:id="@+id/adSlidImageView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -20,6 +20,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
          >
-    </com.jionui.uiilib.view.AdSlidImageView>
+    </com.jionui.uiilib.view.AdSlidImageView> -->
 
 </RelativeLayout>

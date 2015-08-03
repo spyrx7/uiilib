@@ -62,7 +62,7 @@ containing a value of this type.
     }
     public static final class id {
         public static final int action_settings=0x7f080009;
-        public static final int adSlidImageView1=0x7f080000;
+        public static final int adSlidShowView1=0x7f080000;
         public static final int ad_viewPager=0x7f080003;
         public static final int arrow=0x7f080005;
         public static final int description=0x7f080007;
